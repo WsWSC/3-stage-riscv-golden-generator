@@ -1,0 +1,11 @@
+#ifndef _RVTEST_CONFIG_H
+#define _RVTEST_CONFIG_H
+
+#define UDB_MXLEN 32
+
+#define I_SUPPORTED
+#define M_SUPPORTED
+#define ZICSR_SUPPORTED
+#define ZIFENCEI_SUPPORTED
+
+#endif
