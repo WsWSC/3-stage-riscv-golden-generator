@@ -2,21 +2,23 @@
 
 Generate ACT4/Sail golden files for the `3-stage_RISC-V` compliance runner.
 
-## Directory Layout
+## Target WSL Layout
+
+Keep `~/risc-v` simple:
 
 ```text
 ~/risc-v/
   riscv-arch-test/                  # official ACT4 repo
-  tools/                            # RISC-V toolchain and Sail
-  arch-test-compile/                # ACT4 workdir/cache
   3stage-riscv-golden-generator/    # this repo
 ```
 
-## What This Repo Does
+The generator stores its ACT4 work cache inside:
 
-This repo does not contain ACT4, Sail, or the RISC-V toolchain.
+```text
+3stage-riscv-golden-generator/.work/
+```
 
-It only contains the 3-stage CPU golden-generation recipe:
+## What This Repo Contains
 
 ```text
 generate_golden.sh
@@ -26,24 +28,27 @@ env/
 scripts/export_act4_to_repo.py
 ```
 
+This repo does not contain ACT4, Sail, or the RISC-V toolchain.
+
 ## First-Time Setup
 
 Clone ACT4 and this generator repo in WSL:
 
 ```bash
+mkdir -p ~/risc-v
 cd ~/risc-v
 git clone https://github.com/riscv/riscv-arch-test.git
-git clone https://github.com/WsWSC/3-stage-riscv-golden-generator.git
+git clone https://github.com/WsWSC/3-stage-riscv-golden-generator.git 3stage-riscv-golden-generator
 ```
 
 Create local config:
 
 ```bash
-cd ~/risc-v/3-stage-riscv-golden-generator
+cd ~/risc-v/3stage-riscv-golden-generator
 cp config.env.example config.env
 ```
 
-Edit only this line in `config.env`:
+Edit `config.env`:
 
 ```bash
 TARGET_REPO=/mnt/c/Users/<windows_user>/Documents/3-stage_RISC-V
@@ -53,6 +58,8 @@ TARGET_REPO=/mnt/c/Users/<windows_user>/Documents/3-stage_RISC-V
 
 ## Required WSL Tools
 
+These commands must work in WSL:
+
 ```bash
 which mise
 which riscv64-unknown-elf-gcc
@@ -61,10 +68,16 @@ which riscv64-unknown-elf-objcopy
 which sail_riscv_sim
 ```
 
+If `sail_riscv_sim` is not in `PATH`, set it in `config.env`:
+
+```bash
+SAIL_RISCV_SIM=/path/to/sail_riscv_sim
+```
+
 ## Generate Golden
 
 ```bash
-cd ~/risc-v/3-stage-riscv-golden-generator
+cd ~/risc-v/3stage-riscv-golden-generator
 ./generate_golden.sh
 ```
 
@@ -87,4 +100,9 @@ DUT_runtime/data/*.data 47
 
 ## Local Files
 
-`config.env` is local only and ignored by Git.
+Ignored local files:
+
+```text
+config.env
+.work/
+```

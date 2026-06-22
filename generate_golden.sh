@@ -11,11 +11,13 @@ fi
 
 RISCV_HOME=${RISCV_HOME:-$HOME/risc-v}
 ACT4_REPO=${ACT4_REPO:-$RISCV_HOME/riscv-arch-test}
-ACT4_WORK=${ACT4_WORK:-$RISCV_HOME/arch-test-compile/act4_work}
-SAIL_RISCV_SIM=${SAIL_RISCV_SIM:-$RISCV_HOME/tools/bin/sail_riscv_sim}
+ACT4_WORK=${ACT4_WORK:-$GENERATOR_ROOT/.work/act4_work}
 TARGET_REPO=${TARGET_REPO:-}
 EXTENSIONS=${EXTENSIONS:-I M}
 CONFIG=${CONFIG:-$GENERATOR_ROOT/act4_config/3stage-rv32im/test_config.yaml}
+
+export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+SAIL_RISCV_SIM=${SAIL_RISCV_SIM:-$(command -v sail_riscv_sim || true)}
 
 if [ -z "$TARGET_REPO" ]; then
     echo "missing TARGET_REPO" >&2
@@ -28,8 +30,9 @@ if [ ! -d "$ACT4_REPO" ]; then
     exit 1
 fi
 
-if [ ! -x "$SAIL_RISCV_SIM" ]; then
-    echo "missing SAIL_RISCV_SIM: $SAIL_RISCV_SIM" >&2
+if [ -z "$SAIL_RISCV_SIM" ] || [ ! -x "$SAIL_RISCV_SIM" ]; then
+    echo "missing sail_riscv_sim in PATH" >&2
+    echo "install Sail or set SAIL_RISCV_SIM in config.env" >&2
     exit 1
 fi
 
@@ -38,7 +41,7 @@ if [ ! -d "$TARGET_REPO" ]; then
     exit 1
 fi
 
-export PATH="$HOME/.local/bin:$RISCV_HOME/tools/bin:$(dirname "$SAIL_RISCV_SIM"):/usr/local/bin:/usr/bin:/bin:$PATH"
+export PATH="$(dirname "$SAIL_RISCV_SIM"):$PATH"
 
 for ext in $EXTENSIONS; do
     cd "$ACT4_REPO"
