@@ -1,4 +1,4 @@
-# 3stage RISC-V Golden Generator
+# 3-stage RISC-V Golden Generator
 
 Generate ACT4/Sail golden files for the `3-stage_RISC-V` compliance runner.
 
@@ -9,13 +9,13 @@ Keep `~/risc-v` simple:
 ```text
 ~/risc-v/
   riscv-arch-test/                  # official ACT4 repo
-  3stage-riscv-golden-generator/    # this repo
+  3-stage-riscv-golden-generator/    # this repo
 ```
 
 The generator stores its ACT4 work cache inside:
 
 ```text
-3stage-riscv-golden-generator/.work/
+3-stage-riscv-golden-generator/.work/
 ```
 
 ## What This Repo Contains
@@ -38,13 +38,13 @@ Clone ACT4 and this generator repo in WSL:
 mkdir -p ~/risc-v
 cd ~/risc-v
 git clone https://github.com/riscv/riscv-arch-test.git
-git clone https://github.com/WsWSC/3-stage-riscv-golden-generator.git 3stage-riscv-golden-generator
+git clone https://github.com/WsWSC/3-stage-riscv-golden-generator.git 3-stage-riscv-golden-generator
 ```
 
 Create local config:
 
 ```bash
-cd ~/risc-v/3stage-riscv-golden-generator
+cd ~/risc-v/3-stage-riscv-golden-generator
 cp config.env.example config.env
 ```
 
@@ -77,7 +77,7 @@ SAIL_RISCV_SIM=/path/to/sail_riscv_sim
 ## Generate Golden
 
 ```bash
-cd ~/risc-v/3stage-riscv-golden-generator
+cd ~/risc-v/3-stage-riscv-golden-generator
 ./generate_golden.sh
 ```
 
